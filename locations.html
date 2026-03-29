@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locations</title>
+
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+
+<style>
+:root{
+  --blue:#6f9faa;
+  --bg:#f6f7f8;
+  --text:#111;
+  --muted:#8e8e93;
+  --green:#34c759;
+  --border:#e5e5ea;
+  --red:#c33a2c;
+  --chicken-red:#cf3e3e;
+}
+
+*{box-sizing:border-box;}
+
+html, body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  background:var(--blue);
+  padding:20px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#fff;
+}
+
+.header-title{
+  font-size:20px;
+  font-weight:700;
+}
+
+.header img{
+  width:54px;
+}
+
+/* LIST */
+.list{
+  padding-bottom:120px;
+}
+
+/* USE LOCATION */
+.use-location{
+  background:#fff;
+  padding:20px;
+  font-weight:700;
+  font-size:18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+}
+
+.use-location span{
+  color:var(--blue);
+}
+
+/* BRAND IMAGE */
+.brand-block{
+  background:#fff;
+  padding:28px;
+  display:flex;
+  justify-content:center;
+  border-bottom:1px solid var(--border);
+}
+
+.brand-block img{
+  width:260px;
+}
+
+/* LOCATION CARDS */
+.locations{
+  padding:16px;
+}
+
+.location-card{
+  background:#fff;
+  padding:22px;
+  display:flex;
+  gap:16px;
+  border-radius:18px;
+  margin-bottom:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  cursor:pointer;
+  align-items:center;
+}
+
+.loc-icon{
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.loc-icon img{
+  width:32px;
+  height:32px;
+}
+
+.content{flex:1;}
+
+.name{
+  font-size:19px;
+  font-weight:800;
+  color:var(--red);
+}
+
+.meta{
+  color:var(--muted);
+  margin-top:5px;
+  font-size:15px;
+}
+
+.status{
+  color:var(--green);
+  font-weight:700;
+}
+
+.services{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:5px;
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:80px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#888;
+  cursor:pointer;
+}
+
+.nav-item.active{
+  color:var(--blue);
+  font-weight:600;
+}
+
+.icon{
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+
+.modal-box{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  width:80%;
+  max-width:280px;
+  text-align:center;
+}
+
+.modal img{
+  width:70px;
+  margin-bottom:10px;
+}
+
+.modal-title{
+  font-size:16px;
+  font-weight:700;
+}
+
+.modal-text{
+  font-size:14px;
+  color:var(--muted);
+  margin:8px 0 14px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:8px;
+}
+
+.modal-btn{
+  flex:1;
+  padding:12px;
+  border-radius:999px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.modal-btn.allow{
+  background:var(--red);
+  color:#fff;
+}
+
+.modal-btn.deny{
+  border:1px solid var(--border);
+}
+
+/* LOADER */
+#loader{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+
+#loader.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.loader-inner{
+  position:relative;
+  width:120px;
+  height:120px;
+  background:var(--blue);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:
+    inset 0 2px 26px #027,
+    inset 0 -6px 24px #027;
+}
+
+.loader-logo{
+  width:75px;
+  height:75px;
+  object-fit:contain;
+  z-index:2;
+  filter: drop-shadow(1px 1px 1px white);
+}
+
+.loader-ring{
+  position:absolute;
+  inset:-18px;
+  border-radius:50%;
+  border:6px solid transparent;
+  border-top:6px solid var(--chicken-red);
+  border-right:6px solid var(--chicken-red);
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+@keyframes popBounce{
+  0%   { transform:scale(0.7); opacity:0; }
+  60%  { transform:scale(1.08); opacity:1; }
+  80%  { transform:scale(0.97); }
+  100% { transform:scale(1); }
+}
+
+.loader-inner.pop{
+  animation:popBounce 0.45s cubic-bezier(.34,1.56,.64,1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="header-title">LOCATIONS</div>
+  <img src="PropChkn2.png">
+</div>
+
+<div class="list">
+
+  <div class="use-location" onclick="openModal()">
+    📍 <span>Use Current Location</span>
+  </div>
+
+  <div class="brand-block">
+    <img src="PropChkn3.png">
+  </div>
+
+  <div class="locations">
+
+    <div class="location-card" onclick="selectLocation('3465 California St')">
+      <div class="loc-icon"><img src="PropChkn4.png"></div>
+      <div class="content">
+        <div class="name">Proposition Chicken</div>
+        <div class="meta">3465 California St · (415) 422-0646</div>
+        <div class="meta"><span class="status">Open</span> · Closes 9 PM</div>
+        <div class="services">Dine-in · Takeout · No-contact delivery</div>
+      </div>
+    </div>
+
+    <div class="location-card" onclick="selectLocation('16 W Portal Ave')">
+      <div class="loc-icon"><img src="PropChkn4.png"></div>
+      <div class="content">
+        <div class="name">Proposition Chicken</div>
+        <div class="meta">16 W Portal Ave · (415) 571-8136</div>
+        <div class="meta"><span class="status">Open</span> · Closes 9 PM</div>
+        <div class="services">Dine-in · Takeout · No-contact delivery</div>
+      </div>
+    </div>
+
+    <div class="location-card" onclick="selectLocation('3260 Lakeshore Ave')">
+      <div class="loc-icon"><img src="PropChkn4.png"></div>
+      <div class="content">
+        <div class="name">Proposition Chicken</div>
+        <div class="meta">3260 Lakeshore Ave · (510) 808-5172</div>
+        <div class="meta"><span class="status">Open</span> · Closes 9 PM</div>
+        <div class="services">Dine-in · Takeout · Delivery</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-inner" id="loaderInner">
+    <div class="loader-ring"></div>
+    <img src="PropChkn2.png" class="loader-logo">
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="locationModal">
+  <div class="modal-box">
+    <img src="PropChkn1.png">
+    <div class="modal-title">Enable Location?</div>
+    <div class="modal-text">Allow access to find nearby locations.</div>
+    <div class="modal-actions">
+      <div class="modal-btn deny" onclick="closeModal()">Not Now</div>
+      <div class="modal-btn allow" onclick="requestLocation()">Allow</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-item active" onclick="goTo('locations.html')"><div class="icon">📍</div>Locations</div>
+  <div class="nav-item" onclick="goTo('order.html')"><div class="icon">🧾</div>Order</div>
+  <div class="nav-item" onclick="goTo('rewards.html')"><div class="icon">🐔</div>Rewards</div>
+  <div class="nav-item" onclick="goTo('gift-cards.html')"><div class="icon">🎁</div>Gift Cards</div>
+  <div class="nav-item" onclick="goTo('more.html')"><div class="icon">⋯</div>More</div>
+</div>
+
+<script>
+function showLoader(next, duration=2000){
+  const loader = document.getElementById('loader');
+  const inner = document.getElementById('loaderInner');
+
+  loader.classList.add('active');
+
+  inner.classList.remove('pop');
+  void inner.offsetWidth;
+  inner.classList.add('pop');
+
+  setTimeout(()=>{
+    window.location.href = next;
+  }, duration);
+}
+
+function goTo(page){
+  showLoader(page, 1000);
+}
+
+function selectLocation(name){
+  localStorage.setItem('selectedLocation', name);
+
+  // force correct value before navigation
+  setTimeout(()=>{
+    showLoader('order-details.html', 2000);
+  }, 10);
+}
+
+function openModal(){
+  document.getElementById('locationModal').style.display='flex';
+}
+
+function closeModal(){
+  document.getElementById('locationModal').style.display='none';
+}
+
+function requestLocation(){
+  closeModal();
+}
+
+setTimeout(()=>{ openModal(); },1200);
+</script>
+
+</body>
+</html>

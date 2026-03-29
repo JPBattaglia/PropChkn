@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gift Card Checkout</title>
+
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+
+<style>
+:root{
+  --blue:#6f9faa;
+  --bg:#f2f2f2;
+  --red:#cf3e3e;
+  --text:#111;
+  --muted:#777;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:var(--bg);
+}
+
+/* HEADER */
+.header{
+  background:var(--blue);
+  color:#fff;
+  padding:20px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header-title{
+  font-size:20px;
+  font-weight:800;
+}
+
+.header img{
+  width:50px;
+}
+
+/* MAIN */
+.main{
+  padding:20px;
+  padding-bottom:120px;
+}
+
+/* CARD SELECTION */
+.card-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.card-option{
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  border:3px solid transparent;
+  cursor:pointer;
+}
+
+.card-option.active{
+  border:3px solid var(--red);
+}
+
+.card-option img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
+/* INPUT */
+.section{
+  margin-top:20px;
+}
+
+.label{
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.input{
+  width:100%;
+  padding:16px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
+
+/* SUMMARY */
+.summary{
+  margin-top:20px;
+  background:#fff;
+  padding:18px;
+  border-radius:16px;
+  font-weight:700;
+}
+
+/* CTA */
+.footer{
+  margin:30px 20px 120px;
+}
+
+.cta{
+  background:var(--red);
+  color:#fff;
+  padding:20px;
+  border-radius:999px;
+  text-align:center;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:80px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#888;
+  cursor:pointer;
+}
+
+.nav-item.active{
+  color:var(--blue);
+  font-weight:600;
+}
+
+.icon{
+  font-size:20px;
+  margin-bottom:4px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-title">SEND GIFT CARD</div>
+  <img src="PropChkn2.png">
+</div>
+
+<div class="main">
+
+  <!-- CARD SELECTION -->
+  <div class="label">Choose a Card</div>
+
+  <div class="card-grid">
+    <div class="card-option active" onclick="selectCard(this)">
+      <img src="PropChkn1.png">
+    </div>
+
+    <div class="card-option" onclick="selectCard(this)">
+      <img src="PropChkn3.png">
+    </div>
+
+    <div class="card-option" onclick="selectCard(this)">
+      <img src="BeHappy.png">
+    </div>
+
+    <div class="card-option" onclick="selectCard(this)">
+      <img src="PropChkn.png">
+    </div>
+  </div>
+
+  <!-- EMAIL -->
+  <div class="section">
+    <div class="label">Send To</div>
+    <input id="email" class="input" placeholder="Enter email address">
+  </div>
+
+  <!-- AMOUNT -->
+  <div class="summary">
+    Amount: <span id="amountDisplay">$10</span>
+  </div>
+
+  <!-- CTA -->
+  <div class="footer">
+    <div class="cta" onclick="sendGiftCard()">
+      SEND GIFT CARD
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-item" onclick="goTo('locations.html')"><div class="icon">📍</div>Locations</div>
+  <div class="nav-item" onclick="goTo('order.html')"><div class="icon">🧾</div>Order</div>
+  <div class="nav-item" onclick="goTo('rewards.html')"><div class="icon">🐔</div>Rewards</div>
+  <div class="nav-item active"><div class="icon">🎁</div>Gift Cards</div>
+  <div class="nav-item" onclick="goTo('more.html')"><div class="icon">⋯</div>More</div>
+</div>
+
+<script>
+/* LOAD SELECTED AMOUNT */
+const savedAmount = localStorage.getItem('giftAmount') || '$10';
+document.getElementById('amountDisplay').innerText = savedAmount;
+
+/* CARD SELECT */
+function selectCard(el){
+  document.querySelectorAll('.card-option').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* SEND */
+function sendGiftCard(){
+  const email = document.getElementById('email').value.trim();
+
+  if(!email){
+    alert('Enter email');
+    return;
+  }
+
+  alert('Gift Card Sent');
+}
+</script>
+
+</body>
+</html>

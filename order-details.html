@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Details</title>
+
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+
+<style>
+:root{
+  --blue:#6f9faa;
+  --bg:#f2f2f2;
+  --orange:#f56600;
+  --red:#cf3e3e;
+  --text:#111;
+  --muted:#777;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:var(--bg);
+}
+
+/* HEADER */
+.header{
+  background:var(--blue);
+  color:#fff;
+  padding:20px 18px 18px;
+}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.header-title{
+  text-align:center;
+  font-weight:800;
+  letter-spacing:1px;
+  font-size:20px;
+}
+
+.header img{
+  width:44px;
+}
+
+/* BRAND IMAGE */
+.brand-block{
+  background:#fff;
+  padding:10px 20px;
+  display:flex;
+  justify-content:center;
+  border-bottom:1px solid var(--border);
+}
+
+.brand-block img{
+  width:300px;
+}
+
+/* PROGRESS */
+.progress{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:14px;
+}
+
+.progress-line{
+  height:2px;
+  background:#fff;
+  flex:1;
+  margin:0 6px;
+  opacity:.5;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#fff;
+}
+
+.dot.active{
+  width:16px;
+  height:16px;
+}
+
+/* SECTION */
+.section-title{
+  padding:16px 18px;
+  background:#d7e0e4;
+  font-weight:800;
+  font-size:18px;
+  letter-spacing:.5px;
+}
+
+/* ROW */
+.row{
+  background:#fff;
+  padding:22px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+}
+
+.row-title{
+  font-size:22px;
+  font-weight:600;
+}
+
+.row-sub{
+  font-size:15px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+/* RADIO */
+.radio{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  border:2px solid var(--orange);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.radio.active::after{
+  content:'';
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--orange);
+}
+
+/* IMAGE FILL */
+.brand-fill{
+  display:flex;
+  justify-content:center;
+}
+
+.brand-fill img{
+  width:100%;
+  opacity:.9;
+}
+
+/* BUTTON */
+.footer{
+  position:fixed;
+  bottom:90px;
+  left:20px;
+  right:20px;
+}
+
+.next{
+  background:var(--red);
+  color:#fff;
+  text-align:center;
+  padding:20px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+  <div class="header-top">
+    <div id="locationDisplay" data-link="locations.html">Loading...</div>
+    <img src="PropChkn2.png">
+  </div>
+
+  <div class="header-title">ORDER DETAILS</div>
+
+  <div class="progress">
+    <div class="dot active"></div>
+    <div class="progress-line"></div>
+    <div class="dot"></div>
+    <div class="progress-line"></div>
+    <div class="dot"></div>
+    <div class="progress-line"></div>
+    <div class="dot"></div>
+  </div>
+
+</div>
+
+<div class="brand-block">
+    <img src="PropChkn3.png">
+</div>
+
+<div class="section-title">ORDER MODE</div>
+
+<div class="row" onclick="selectGroup('mode', this)">
+  <div class="row-title">Pickup</div>
+  <div class="radio active"></div>
+</div>
+
+<div class="row" onclick="selectGroup('mode', this)">
+  <div class="row-title">Delivery</div>
+  <div class="radio"></div>
+</div>
+
+<div class="section-title">WHEN WOULD YOU LIKE YOUR ORDER?</div>
+
+<div class="row" onclick="selectGroup('time', this)">
+  <div class="row-title">ASAP</div>
+  <div class="radio active"></div>
+</div>
+
+<div class="row" onclick="selectGroup('time', this)">
+  <div>
+    <div class="row-title">Schedule</div>
+    <div class="row-sub">Today, Mar 28 2026 • Select Time</div>
+  </div>
+  <div class="radio"></div>
+</div>
+
+<div class="footer">
+  <div class="next" data-link="menu.html">
+    NEXT: CHOOSE FOOD & DRINKS
+  </div>
+</div>
+
+<script>
+function selectGroup(group, row){
+  let rows;
+
+  if(group === 'mode'){
+    rows = document.querySelectorAll('.section-title + .row, .section-title + .row + .row');
+  } else {
+    const sections = document.querySelectorAll('.section-title');
+    const timeSection = sections[1];
+    rows = [];
+    let next = timeSection.nextElementSibling;
+    while(next && next.classList.contains('row')){
+      rows.push(next);
+      next = next.nextElementSibling;
+    }
+  }
+
+  rows.forEach(r=>{
+    const radio = r.querySelector('.radio');
+    if(radio) radio.classList.remove('active');
+  });
+
+  row.querySelector('.radio').classList.add('active');
+}
+</script>
+
+<script>
+const loc = localStorage.getItem('selectedLocation');
+
+if(loc){
+  document.getElementById('locationDisplay').innerText = loc;
+} else {
+  document.getElementById('locationDisplay').innerText = "Select Location";
+}
+</script>
+
+</body>
+</html>
