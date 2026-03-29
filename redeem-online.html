@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redeem Online</title>
+
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+
+<style>
+:root{
+  --blue:#6f9faa;
+  --bg:#f6f7f8;
+  --red:#c33a2c;
+  --text:#111;
+  --muted:#777;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+
+/* HEADER */
+.header{
+  background:var(--blue);
+  color:#fff;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.header img{
+  width:50px;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,0.1);
+  text-align:center;
+}
+
+/* IMAGE TOP */
+.card-img{
+  width:90%;
+  margin:auto;
+  margin-top:20px;
+  background:#f2f2f2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card-img img{
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
+
+/* CARD BODY */
+.card-body{
+  padding:24px;
+}
+
+/* SUCCESS */
+.success{
+  margin-bottom:16px;
+}
+
+.success-icon{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.success-text{
+  font-size:20px;
+  font-weight:700;
+}
+
+/* REWARD */
+.reward-title{
+  font-size:22px;
+  font-weight:800;
+}
+
+.reward-desc{
+  margin:10px 0 20px;
+  color:#444;
+}
+
+/* SUMMARY */
+.summary{
+  margin-top:10px;
+  font-size:15px;
+  text-align:left;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.total{
+  font-weight:800;
+  font-size:18px;
+}
+
+/* BUTTON */
+.cta{
+  margin-top:20px;
+  padding:16px;
+  border-radius:999px;
+  text-align:center;
+  font-weight:700;
+  background:var(--red);
+  color:#fff;
+  cursor:pointer;
+}
+
+/* NAV */
+.nav{
+  height:80px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#888;
+  cursor:pointer;
+}
+
+.nav-item.active{
+  color:var(--blue);
+  font-weight:600;
+}
+
+.icon{
+  font-size:20px;
+  margin-bottom:4px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="header-title">REDEEM ONLINE</div>
+  <img src="PropChkn2.png" alt="Prop Chicken">
+</div>
+
+<div class="main">
+
+  <div class="card">
+
+    <div class="card-img">
+      <img src="PropChkn3.png" alt="Proposition Chicken">
+    </div>
+
+    <div class="card-body">
+
+      <div class="success">
+        <div class="success-icon">✓</div>
+        <div class="success-text">Reward Applied</div>
+      </div>
+
+      <div class="reward-title">$3 Sign-Up Reward</div>
+      <div class="reward-desc">
+        Your reward has been added to your order.
+      </div>
+
+      <div class="summary">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>$12.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Reward</span>
+          <span>- $3.00</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>$9.00</span>
+        </div>
+      </div>
+
+      <div class="cta" data-link="order.html">
+        CONTINUE TO ORDER
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+
+  <div class="nav-item" data-link="locations.html" data-duration="1000">
+    <div class="icon">📍</div>
+    Locations
+  </div>
+
+  <div class="nav-item" data-link="order.html" data-duration="1000">
+    <div class="icon">🧾</div>
+    Order
+  </div>
+
+  <div class="nav-item active" data-link="rewards.html" data-duration="1000">
+    <div class="icon">🐔</div>
+    Rewards
+  </div>
+
+  <div class="nav-item" data-link="gift-cards.html" data-duration="1000">
+    <div class="icon">🎁</div>
+    Gift Cards
+  </div>
+
+  <div class="nav-item" data-link="more.html" data-duration="1000">
+    <div class="icon">⋯</div>
+    More
+  </div>
+
+</div>
+
+</body>
+</html>

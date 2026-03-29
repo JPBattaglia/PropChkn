@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redeem In-Store</title>
+
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+
+<style>
+:root{
+  --blue:#6f9faa;
+  --bg:#f6f7f8;
+  --red:#c33a2c;
+  --text:#111;
+  --muted:#777;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+
+/* HEADER */
+.header{
+  background:var(--blue);
+  color:#fff;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.header img{
+  width:50px;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  width:100%;
+  max-width:360px;
+  background:#fff;
+  border-radius:22px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.1);
+  text-align:center;
+  padding-bottom: 20px;
+}
+
+.card-img{
+  width:90%;
+  margin: 20px auto;
+  background:#f2f2f2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card-img img{
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
+
+
+/* TITLE */
+.reward-title{
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.reward-sub{
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+/* BARCODE */
+.barcode{
+  width:90%;
+  height:90px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #000 0px,
+      #000 2px,
+      #fff 2px,
+      #fff 5px
+    );
+  border-radius:8px;
+  margin:10px auto;
+}
+
+.code{
+  font-size:14px;
+  letter-spacing:3px;
+  color:#333;
+  margin-bottom:18px;
+}
+
+/* TIMER */
+.timer{
+  font-size:28px;
+  font-weight:800;
+  color:var(--red);
+  margin-bottom:10px;
+}
+
+.timer-label{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+/* INSTRUCTION */
+.instructions{
+  font-size:14px;
+  color:#444;
+  margin: 0 50px;
+}
+
+/* NAV */
+.nav{
+  height:80px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#888;
+  cursor:pointer;
+}
+
+.nav-item.active{
+  color:var(--blue);
+  font-weight:600;
+}
+
+.icon{
+  font-size:20px;
+  margin-bottom:4px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="header-title">REDEEM IN-STORE</div>
+  <img src="PropChkn2.png" alt="Prop Chicken">
+</div>
+
+<div class="main">
+
+  <div class="card">
+
+  <div class="card-img">
+    <img src="PropChkn3.png" alt="Proposition Chicken">
+  </div>
+
+    <div class="reward-title">$3 Reward</div>
+    <div class="reward-sub">Show this to cashier</div>
+
+    <div class="barcode"></div>
+    <div class="code">PC-3948-22</div>
+
+    <div class="timer" id="timer">02:00</div>
+    <div class="timer-label">Expires soon once opened</div>
+
+    <div class="instructions">
+      Present this screen at the register to redeem your reward.
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+
+  <div class="nav-item" onclick="goTo('locations.html')">
+    <div class="icon">📍</div>
+    Locations
+  </div>
+
+  <div class="nav-item" onclick="goTo('order.html')">
+    <div class="icon">🧾</div>
+    Order
+  </div>
+
+  <div class="nav-item active" onclick="goTo('rewards.html')">
+    <div class="icon">🐔</div>
+    Rewards
+  </div>
+
+  <div class="nav-item" onclick="goTo('gift-cards.html')">
+    <div class="icon">🎁</div>
+    Gift Cards
+  </div>
+
+  <div class="nav-item" onclick="goTo('more.html')">
+    <div class="icon">⋯</div>
+    More
+  </div>
+
+</div>
+
+<script>
+function goTo(page){
+  window.location.href = page;
+}
+
+/* COUNTDOWN TIMER */
+let time = 120;
+
+function updateTimer(){
+  let min = Math.floor(time / 60);
+  let sec = time % 60;
+
+  document.getElementById("timer").innerText =
+    String(min).padStart(2,'0') + ":" +
+    String(sec).padStart(2,'0');
+
+  if(time > 0){
+    time--;
+  }
+}
+
+setInterval(updateTimer,1000);
+updateTimer();
+</script>
+
+</body>
+</html>
