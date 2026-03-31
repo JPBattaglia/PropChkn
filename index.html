@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- LINK PREVIEW (iMessage / social / Safari) -->
-<meta property="og:title" content="Proposition Chicken">
-<meta property="og:description" content="Order, rewards, and more.">
-<meta property="og:image" content="https://yourdomain.com/PropChkn.png">
-<meta property="og:type" content="website">
-
-<!-- iOS / Safari -->
-<link rel="apple-touch-icon" href="PropChkn.png">
-
-<!-- Twitter (optional but clean) -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://yourdomain.com/PropChkn.png">
-    
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proposition Chicken</title>
@@ -24,22 +11,15 @@
 <style>
 :root{
   --blue:#6f9faa;
-  --bg:#ffffff;
-  --splash:#ffffff;
-  --error:#cf3e3e;
   --spring:cubic-bezier(.22,1,.36,1);
-  --chicken-red:#cf3e3e;
 }
-
-*{box-sizing:border-box;}
 
 html,body{
   margin:0;
-  width:100%;
-  min-height:100%;
+  height:100%;
   overflow:hidden;
+  background:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-  background:var(--bg);
 }
 
 /* SPLASH */
@@ -47,114 +27,70 @@ html,body{
   position:fixed;
   inset:0;
   z-index:999;
-  background:var(--splash);
+  background:#000;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:opacity .9s var(--spring), transform .9s var(--spring), filter .6s ease;
+  transition:opacity .7s ease, transform .7s ease;
 }
 
 #splash.fade{
   opacity:0;
-  transform:scale(1.04);
-  filter:blur(8px);
-  pointer-events:none;
+  transform:scale(1.03);
 }
 
 .splash-gif{
-  width:420px;
-  max-width:90vw;
-}
-
-/* LOADER */
-#loader{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s ease;
-}
-
-#loader.active{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.loader-inner{
-  position:relative;
-  width:120px;
-  height:120px;
-  background:var(--blue);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.loader-logo{
-  width:75px;
-  height:75px;
-  object-fit:contain;
-  z-index:2;
-}
-
-.loader-ring{
-  position:absolute;
-  inset:-18px;
-  border-radius:50%;
-  border:6px solid transparent;
-  border-top:6px solid var(--chicken-red);
-  border-right:6px solid var(--chicken-red);
-  animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
-}
-
-/* APP */
-#app{
-  position:relative;
   width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  background:#fff;
+  height:100%;
+  object-fit:cover;
 }
 
-/* AUTH */
+/* APP (CENTERED) */
+#app{
+  width:100%;
+  min-height:100vh;
+  background:#fff;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
 .auth{
   width:100%;
   max-width:420px;
   padding:28px;
-  padding-bottom:60px;
-  display:flex;
-  flex-direction:column;
 }
 
+/* ROLLUP */
 .stagger{
   opacity:0;
   transform:translateY(80px);
   transition:all 1s var(--spring);
 }
 
-.show .stagger{
+body.show .stagger{
   opacity:1;
   transform:translateY(0);
 }
+
+.stagger:nth-child(1){transition-delay:.2s;}
+.stagger:nth-child(2){transition-delay:.35s;}
+.stagger:nth-child(3){transition-delay:.5s;}
+.stagger:nth-child(4){transition-delay:.65s;}
+.stagger:nth-child(5){transition-delay:.8s;}
+.stagger:nth-child(6){transition-delay:1.05s;}
 
 .logo{
   text-align:center;
   margin-bottom:80px;
 }
 
-.logo img{width:260px;}
+.logo img{
+  width:260px;
+}
 
+/* BUTTONS */
 .btn{
   width:100%;
   padding:18px;
@@ -166,11 +102,10 @@ html,body{
 }
 
 .apple{background:#000;color:#fff;}
-.primary{background:var(--blue);color:#fff;}
+.primary{background:#6f9faa;color:#fff;}
 
 .google{
   background:#fff;
-  color:#000;
   border:1px solid #888;
 }
 
@@ -181,17 +116,19 @@ html,body{
   cursor:pointer;
 }
 
-.row{display:flex;gap:14px;}
+.row{
+  display:flex;
+  gap:14px;
+}
+
 .row .btn{flex:1;}
 
 .terms{
   margin-top:30px;
-  font-size:15px;
 }
 
 .terms-error{
-  color:var(--error);
-  font-size:13px;
+  color:red;
   display:none;
 }
 </style>
@@ -201,30 +138,19 @@ html,body{
 
 <!-- SPLASH -->
 <div id="splash">
-  <img id="gif" src="PropChkGif.gif" class="splash-gif">
-</div>
-
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-inner" id="loaderInner">
-    <div class="loader-ring"></div>
-    <img src="PropChkn2.png" class="loader-logo">
-  </div>
+  <img src="PropChknVid.gif" class="splash-gif">
 </div>
 
 <!-- APP -->
 <div id="app">
-  <div class="auth" id="auth">
+  <div class="auth">
 
     <div class="logo stagger">
       <img src="PropChkn.png">
     </div>
 
     <button class="btn apple stagger" onclick="go('rewards.html')"> Continue with Apple</button>
-
-    <button class="btn google stagger" onclick="go('rewards.html')">
-      Continue with Google
-    </button>
+    <button class="btn google stagger" onclick="go('rewards.html')">Continue with Google</button>
 
     <div class="link stagger" onclick="go('guest.html')">Explore as Guest</div>
 
@@ -234,14 +160,8 @@ html,body{
     </div>
 
     <div class="terms stagger">
-      <div>
-        <input type="checkbox" id="agree">
-        I agree to the Terms & Conditions
-      </div>
-
-      <div id="termsError" class="terms-error">
-        please check terms and conditions first
-      </div>
+      <input type="checkbox" id="agree"> I agree to Terms
+      <div id="err" class="terms-error">please check terms</div>
     </div>
 
   </div>
@@ -249,28 +169,41 @@ html,body{
 
 <script>
 const splash = document.getElementById('splash');
-const auth = document.getElementById('auth');
 
+let splashDone = false;
+
+/* ⏱ SPLASH */
 setTimeout(()=>{
   splash.classList.add('fade');
-  auth.classList.add('show');
-  splash.style.display='none';
-  document.body.style.overflowY = 'auto';
-}, 5000);
 
-/* ✅ FIXED LOADER CALL */
+  setTimeout(()=>{
+    splash.style.display='none';
+    document.body.style.overflow='auto';
+    splashDone = true;
+
+    setTimeout(()=>{
+      document.body.classList.add('show');
+    }, 120);
+
+  }, 300);
+
+}, 4000);
+
+/* NAV */
 function go(page){
+  if(!splashDone) return;
+
   if(!agree.checked){
-    document.getElementById('termsError').style.display='block';
+    err.style.display='block';
     return;
   }
 
-  document.getElementById('termsError').style.display='none';
+  err.style.display='none';
 
   if(window.showLoader){
-    showLoader(page, 1300); // ← longer, visible, smooth
+    showLoader(page, 1200);
   } else {
-    window.location.href = page;
+    location.href = page;
   }
 }
 </script>
