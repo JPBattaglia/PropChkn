@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="nav.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Redeem In-Store</title>
 
 <link rel="stylesheet" href="app.css">
 <script src="app.js"></script>
+<script src="nav.js"></script>
 
 <style>
 :root{
@@ -66,12 +66,12 @@ body{
   border-radius:22px;
   box-shadow:0 12px 30px rgba(0,0,0,0.1);
   text-align:center;
-  padding-bottom: 20px;
+  padding-bottom:20px;
 }
 
 .card-img{
   width:90%;
-  margin: 20px auto;
+  margin:20px auto;
   background:#f2f2f2;
   display:flex;
   align-items:center;
@@ -84,8 +84,7 @@ body{
   object-fit:contain;
 }
 
-
-/* TITLE */
+/* TEXT */
 .reward-title{
   font-size:22px;
   font-weight:800;
@@ -134,11 +133,11 @@ body{
   margin-bottom:20px;
 }
 
-/* INSTRUCTION */
+/* INSTRUCTIONS */
 .instructions{
   font-size:14px;
   color:#444;
-  margin: 0 50px;
+  margin:0 50px;
 }
 
 /* NAV */
@@ -165,35 +164,31 @@ body{
   font-weight:600;
 }
 
-.icon{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
 .nav-img{
   width:26px;
   height:26px;
   object-fit:contain;
   margin-bottom:4px;
 }
-
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-title">REDEEM IN-STORE</div>
   <img src="PropChkn2.png" alt="Prop Chicken">
 </div>
 
+<!-- MAIN -->
 <div class="main">
 
   <div class="card">
 
-  <div class="card-img">
-    <img src="PropChkn3.png" alt="Proposition Chicken">
-  </div>
+    <div class="card-img">
+      <img src="PropChkn3.png" alt="Proposition Chicken">
+    </div>
 
     <div class="reward-title">$3 Reward</div>
     <div class="reward-sub">Show this to cashier</div>
@@ -212,12 +207,38 @@ body{
 
 </div>
 
-<script>
-function goTo(page){
-  window.location.href = page;
-}
+<!-- NAV -->
+<div class="nav">
 
-/* COUNTDOWN TIMER */
+  <div class="nav-item" data-link="locations.html">
+    <img src="icon-location.png" class="nav-img">
+    Locations
+  </div>
+
+  <div class="nav-item" data-link="order.html">
+    <img src="icon-order.png" class="nav-img">
+    Order
+  </div>
+
+  <div class="nav-item active" data-link="rewards.html">
+    <img src="icon-rewards.png" class="nav-img">
+    Rewards
+  </div>
+
+  <div class="nav-item" data-link="gift-cards.html">
+    <img src="icon-gift.png" class="nav-img">
+    Gift Cards
+  </div>
+
+  <div class="nav-item" data-link="more.html">
+    <img src="icon-more.png" class="nav-img">
+    More
+  </div>
+
+</div>
+
+<!-- TIMER SCRIPT -->
+<script>
 let time = 120;
 
 function updateTimer(){

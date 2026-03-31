@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="nav.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Redeem Online</title>
 
 <link rel="stylesheet" href="app.css">
 <script src="app.js"></script>
+<script src="nav.js"></script>
 
 <style>
 :root{
@@ -68,11 +68,10 @@ body{
   text-align:center;
 }
 
-/* IMAGE TOP */
+/* IMAGE */
 .card-img{
   width:90%;
-  margin:auto;
-  margin-top:20px;
+  margin:20px auto 0;
   background:#f2f2f2;
   display:flex;
   align-items:center;
@@ -85,7 +84,7 @@ body{
   object-fit:contain;
 }
 
-/* CARD BODY */
+/* BODY */
 .card-body{
   padding:24px;
 }
@@ -170,28 +169,24 @@ body{
   font-weight:600;
 }
 
-.icon{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
 .nav-img{
   width:26px;
   height:26px;
   object-fit:contain;
   margin-bottom:4px;
 }
-
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-title">REDEEM ONLINE</div>
   <img src="PropChkn2.png" alt="Prop Chicken">
 </div>
 
+<!-- MAIN -->
 <div class="main">
 
   <div class="card">
@@ -208,6 +203,7 @@ body{
       </div>
 
       <div class="reward-title">$3 Sign-Up Reward</div>
+
       <div class="reward-desc">
         Your reward has been added to your order.
       </div>
@@ -229,12 +225,43 @@ body{
         </div>
       </div>
 
+      <!-- GLOBAL LOADER BUTTON -->
       <div class="cta" data-link="order.html">
         CONTINUE TO ORDER
       </div>
 
     </div>
 
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+
+  <div class="nav-item" data-link="locations.html">
+    <img src="icon-location.png" class="nav-img">
+    Locations
+  </div>
+
+  <div class="nav-item" data-link="order.html">
+    <img src="icon-order.png" class="nav-img">
+    Order
+  </div>
+
+  <div class="nav-item active" data-link="rewards.html">
+    <img src="icon-rewards.png" class="nav-img">
+    Rewards
+  </div>
+
+  <div class="nav-item" data-link="gift-cards.html">
+    <img src="icon-gift.png" class="nav-img">
+    Gift Cards
+  </div>
+
+  <div class="nav-item" data-link="more.html">
+    <img src="icon-more.png" class="nav-img">
+    More
   </div>
 
 </div>

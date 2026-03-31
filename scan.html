@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="nav.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scan In-Store</title>
 
 <link rel="stylesheet" href="app.css">
 <script src="app.js"></script>
+<script src="nav.js"></script>
 
 <style>
 :root{
@@ -128,11 +128,6 @@ body{
   font-weight:600;
 }
 
-.icon{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
 .nav-img{
   width:26px;
   height:26px;
@@ -144,11 +139,13 @@ body{
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-title">SCAN IN-STORE</div>
   <img src="PropChkn2.png" alt="Proposition Chicken">
 </div>
 
+<!-- MAIN -->
 <div class="main">
 
   <div class="qr-box">
@@ -159,15 +156,44 @@ body{
   </div>
 
   <div class="title">Scan at Register</div>
-  <div class="sub">Hold your phone under the scanner to earn points and redeem rewards</div>
+  <div class="sub">
+    Hold your phone under the scanner to earn points and redeem rewards
+  </div>
 
 </div>
 
-<script>
-function goTo(page){
-  window.location.href = page;
-}
+<!-- NAV (GLOBAL LOADER READY) -->
+<div class="nav">
 
+  <div class="nav-item" data-link="locations.html">
+    <img src="icon-location.png" class="nav-img">
+    Locations
+  </div>
+
+  <div class="nav-item" data-link="order.html">
+    <img src="icon-order.png" class="nav-img">
+    Order
+  </div>
+
+  <div class="nav-item" data-link="rewards.html">
+    <img src="icon-rewards.png" class="nav-img">
+    Rewards
+  </div>
+
+  <div class="nav-item" data-link="gift-cards.html">
+    <img src="icon-gift.png" class="nav-img">
+    Gift Cards
+  </div>
+
+  <div class="nav-item" data-link="more.html">
+    <img src="icon-more.png" class="nav-img">
+    More
+  </div>
+
+</div>
+
+<!-- QR SCRIPT -->
+<script>
 function drawQR(text){
   const canvas = document.getElementById("qr");
   const ctx = canvas.getContext("2d");
