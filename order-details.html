@@ -17,6 +17,7 @@
   --red:#cf3e3e;
   --text:#111;
   --muted:#777;
+  --border:#e5e5ea;
 }
 
 body{
@@ -50,7 +51,7 @@ body{
   width:44px;
 }
 
-/* FIXED LOCATION DISPLAY */
+/* LOCATION DISPLAY */
 #locationDisplay{
   cursor:pointer;
   max-width:60%;
@@ -196,11 +197,6 @@ body{
   font-weight:600;
 }
 
-.icon{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
 .nav-img{
   width:26px;
   height:26px;
@@ -299,15 +295,12 @@ function selectGroup(group, row){
 <script>
 const loc = localStorage.getItem('selectedLocation');
 
+const display = document.getElementById('locationDisplay');
+
 if(loc){
-  try{
-    const parsed = JSON.parse(loc);
-    document.getElementById('locationDisplay').innerText = parsed.name || "Select Location";
-  } catch(e){
-    document.getElementById('locationDisplay').innerText = loc;
-  }
+  display.innerText = loc;
 } else {
-  document.getElementById('locationDisplay').innerText = "Select Location";
+  display.innerText = "Select Location";
 }
 </script>
 
