@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="nav.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order Details</title>
@@ -47,6 +48,16 @@ body{
 
 .header img{
   width:44px;
+}
+
+/* FIXED LOCATION DISPLAY */
+#locationDisplay{
+  cursor:pointer;
+  max-width:60%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-weight:600;
 }
 
 /* BRAND IMAGE */
@@ -139,17 +150,6 @@ body{
   background:var(--orange);
 }
 
-/* IMAGE FILL */
-.brand-fill{
-  display:flex;
-  justify-content:center;
-}
-
-.brand-fill img{
-  width:100%;
-  opacity:.9;
-}
-
 /* BUTTON */
 .footer{
   position:fixed;
@@ -166,6 +166,46 @@ body{
   border-radius:999px;
   font-weight:800;
   font-size:16px;
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:80px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#888;
+  cursor:pointer;
+}
+
+.nav-item.active{
+  color:var(--blue);
+  font-weight:600;
+}
+
+.icon{
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+.nav-img{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  margin-bottom:4px;
 }
 </style>
 </head>
@@ -194,7 +234,7 @@ body{
 </div>
 
 <div class="brand-block">
-    <img src="PropChkn3.png">
+  <img src="PropChkn3.png">
 </div>
 
 <div class="section-title">ORDER MODE</div>
@@ -225,7 +265,7 @@ body{
 </div>
 
 <div class="footer">
-  <div class="next" data-link="menu.html">
+  <div class="next" data-link="order.html">
     NEXT: CHOOSE FOOD & DRINKS
   </div>
 </div>
@@ -260,7 +300,12 @@ function selectGroup(group, row){
 const loc = localStorage.getItem('selectedLocation');
 
 if(loc){
-  document.getElementById('locationDisplay').innerText = loc;
+  try{
+    const parsed = JSON.parse(loc);
+    document.getElementById('locationDisplay').innerText = parsed.name || "Select Location";
+  } catch(e){
+    document.getElementById('locationDisplay').innerText = loc;
+  }
 } else {
   document.getElementById('locationDisplay').innerText = "Select Location";
 }

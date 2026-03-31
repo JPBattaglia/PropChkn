@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="nav.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rewards</title>
@@ -276,6 +277,13 @@ body{
 .loader-inner.pop{
   animation:popBounce 0.45s cubic-bezier(.34,1.56,.64,1);
 }
+
+.nav-img{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  margin-bottom:4px;
+}
 </style>
 </head>
 
@@ -344,35 +352,6 @@ body{
       <div class="cta secondary" onclick="showLoader('redeem-online.html')">REDEEM ONLINE</div>
     </div>
 
-  </div>
-
-</div>
-
-<div class="nav">
-
-  <div class="nav-item" onclick="showLoader('locations.html',1000)">
-    <div class="icon">📍</div>
-    Locations
-  </div>
-
-  <div class="nav-item" onclick="showLoader('order.html',1000)">
-    <div class="icon">🧾</div>
-    Order
-  </div>
-
-  <div class="nav-item active" onclick="showLoader('rewards.html',1000)">
-    <div class="icon">🐔</div>
-    Rewards
-  </div>
-
-  <div class="nav-item" onclick="showLoader('gift-cards.html',1000)">
-    <div class="icon">🎁</div>
-    Gift Cards
-  </div>
-
-  <div class="nav-item" onclick="showLoader('more.html',1000)">
-    <div class="icon">⋯</div>
-    More
   </div>
 
 </div>
