@@ -1,4 +1,4 @@
-// app.js — FINAL GLOBAL LOADER
+// app.js — FINAL GLOBAL LOADER (FIXED + SAFE)
 
 (function(){
 
@@ -18,9 +18,15 @@
     document.body.appendChild(loader);
   }
 
-  function showLoader(url, duration = 1200){
+  function showLoader(target, duration){
     const loader = document.getElementById('loader');
     const inner = document.getElementById('loaderInner');
+
+    if(!loader || !inner){
+      if(typeof target === 'function'){ target(); }
+      else if(typeof target === 'string'){ window.location.href = target; }
+      return;
+    }
 
     loader.classList.add('active');
 
@@ -28,30 +34,38 @@
     void inner.offsetWidth;
     inner.classList.add('pop');
 
-    setTimeout(()=>{
-      window.location.href = url;
-    }, duration);
+    setTimeout(function(){
+
+      if(typeof target === 'function'){
+        target();
+        return;
+      }
+
+      if(typeof target === 'string'){
+        window.location.href = target;
+        return;
+      }
+
+    }, duration || 1200);
   }
 
   window.showLoader = showLoader;
 
-  // 🚨 CRITICAL FIX: CAPTURE PHASE
   document.addEventListener('click', function(e){
 
-    const el = e.target.closest('[data-link]');
-    if(!el) return;
+  const el = e.target.closest('[data-link]');
+  if(!el) return;
 
-    e.preventDefault();
-    e.stopPropagation();
+  // 🚨 DO NOT block global events anymore
+  e.preventDefault();
 
-    const url = el.getAttribute('data-link');
-    const duration = el.getAttribute('data-duration') || 1200;
+  const url = el.getAttribute('data-link');
+  const duration = el.getAttribute('data-duration') || 1200;
 
-    showLoader(url, parseInt(duration));
+  showLoader(url, parseInt(duration));
 
-  }, true); // ← THIS makes it override everything
+}, false); // ← CHANGE: NO CAPTURE
 
-  // inject immediately (not waiting)
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', injectLoader);
   } else {
