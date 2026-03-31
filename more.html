@@ -16,6 +16,7 @@
   --text:#111;
   --muted:#777;
   --red:#cf3e3e;
+  --border:#e5e5ea;
 }
 
 body{
@@ -28,7 +29,7 @@ body{
 .header{
   background:var(--blue);
   color:#fff;
-  padding:22px;
+  padding:22px 18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -43,20 +44,28 @@ body{
   width:50px;
 }
 
-/* LIST */
+/* WRAPPER */
+.wrapper{
+  padding:16px;
+  padding-bottom:120px;
+}
+
+/* SECTION */
 .section{
-  margin-top:16px;
+  margin-bottom:16px;
   background:#fff;
   border-radius:16px;
   overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
 }
 
+/* ITEM */
 .item{
   padding:18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid var(--border);
   font-size:16px;
   cursor:pointer;
 }
@@ -72,7 +81,7 @@ body{
 
 /* SIGN OUT */
 .signout{
-  margin:20px;
+  margin:20px 0;
   padding:18px;
   text-align:center;
   border-radius:999px;
@@ -80,6 +89,7 @@ body{
   color:var(--red);
   font-weight:700;
   cursor:pointer;
+  background:#fff;
 }
 
 /* NAV */
@@ -110,18 +120,12 @@ body{
   font-weight:600;
 }
 
-.icon{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
 .nav-img{
   width:26px;
   height:26px;
   object-fit:contain;
   margin-bottom:4px;
 }
-
 </style>
 </head>
 
@@ -132,7 +136,7 @@ body{
   <img src="PropChkn2.png">
 </div>
 
-<div style="padding:16px; padding-bottom:120px;">
+<div class="wrapper">
 
   <div class="section">
     <div class="item" data-no-loader>
@@ -186,6 +190,35 @@ body{
 
 </div>
 
+<!-- NAV -->
+<div class="nav">
+
+  <div class="nav-item" data-link="locations.html">
+    <img src="icon-location.png" class="nav-img">
+    Locations
+  </div>
+
+  <div class="nav-item" data-link="order.html">
+    <img src="icon-order.png" class="nav-img">
+    Order
+  </div>
+
+  <div class="nav-item" data-link="rewards.html">
+    <img src="icon-rewards.png" class="nav-img">
+    Rewards
+  </div>
+
+  <div class="nav-item" data-link="gift-cards.html">
+    <img src="icon-gift.png" class="nav-img">
+    Gift Cards
+  </div>
+
+  <div class="nav-item active">
+    <img src="icon-more.png" class="nav-img">
+    More
+  </div>
+
+</div>
 
 </body>
 </html>

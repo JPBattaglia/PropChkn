@@ -18,7 +18,6 @@
   --green:#34c759;
   --border:#e5e5ea;
   --red:#c33a2c;
-  --chicken-red:#cf3e3e;
 }
 
 *{box-sizing:border-box;}
@@ -71,7 +70,7 @@ html, body{
   color:var(--blue);
 }
 
-/* BRAND IMAGE */
+/* BRAND */
 .brand-block{
   background:#fff;
   padding:28px;
@@ -84,7 +83,7 @@ html, body{
   width:260px;
 }
 
-/* LOCATION CARDS */
+/* CARDS */
 .locations{
   padding:16px;
 }
@@ -114,9 +113,7 @@ html, body{
   height:32px;
 }
 
-.content{
-  flex:1;
-}
+.content{flex:1;}
 
 .name{
   font-size:19px;
@@ -161,7 +158,6 @@ html, body{
   align-items:center;
   font-size:12px;
   color:#888;
-  cursor:pointer;
 }
 
 .nav-item.active{
@@ -169,8 +165,10 @@ html, body{
   font-weight:600;
 }
 
-.icon{
-  font-size:20px;
+.nav-img{
+  width:26px;
+  height:26px;
+  object-fit:contain;
   margin-bottom:4px;
 }
 
@@ -220,7 +218,6 @@ html, body{
   padding:12px;
   border-radius:999px;
   font-weight:600;
-  cursor:pointer;
 }
 
 .modal-btn.allow{
@@ -231,80 +228,6 @@ html, body{
 .modal-btn.deny{
   border:1px solid var(--border);
 }
-
-/* LOADER */
-#loader{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s ease;
-}
-
-#loader.active{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.loader-inner{
-  position:relative;
-  width:120px;
-  height:120px;
-  background:var(--blue);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:
-    inset 0 2px 26px #027,
-    inset 0 -6px 24px #027;
-}
-
-.loader-logo{
-  width:75px;
-  height:75px;
-  object-fit:contain;
-  z-index:2;
-  filter:drop-shadow(1px 1px 1px white);
-}
-
-.loader-ring{
-  position:absolute;
-  inset:-18px;
-  border-radius:50%;
-  border:6px solid transparent;
-  border-top:6px solid var(--chicken-red);
-  border-right:6px solid var(--chicken-red);
-  animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
-}
-
-@keyframes popBounce{
-  0%{transform:scale(0.7);opacity:0;}
-  60%{transform:scale(1.08);opacity:1;}
-  80%{transform:scale(0.97);}
-  100%{transform:scale(1);}
-}
-
-.loader-inner.pop{
-  animation:popBounce .45s cubic-bezier(.34,1.56,.64,1);
-}
-
-.nav-img{
-  width:26px;
-  height:26px;
-  object-fit:contain;
-  margin-bottom:4px;
-}
-
 </style>
 </head>
 
@@ -361,13 +284,7 @@ html, body{
 
 </div>
 
-<div id="loader">
-  <div class="loader-inner" id="loaderInner">
-    <div class="loader-ring"></div>
-    <img src="PropChkn2.png" class="loader-logo">
-  </div>
-</div>
-
+<!-- MODAL -->
 <div class="modal" id="locationModal">
   <div class="modal-box">
     <img src="PropChkn1.png">
@@ -380,35 +297,38 @@ html, body{
   </div>
 </div>
 
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-item active" data-link="locations.html">
+    <img src="icon-location.png" class="nav-img">
+    Locations
+  </div>
+  <div class="nav-item" data-link="order.html">
+    <img src="icon-order.png" class="nav-img">
+    Order
+  </div>
+  <div class="nav-item" data-link="rewards.html">
+    <img src="icon-rewards.png" class="nav-img">
+    Rewards
+  </div>
+  <div class="nav-item" data-link="gift-cards.html">
+    <img src="icon-gift.png" class="nav-img">
+    Gift Cards
+  </div>
+  <div class="nav-item" data-link="more.html">
+    <img src="icon-more.png" class="nav-img">
+    More
+  </div>
+</div>
+
 <script>
-function showLoader(next, duration=2000){
-  const loader = document.getElementById('loader');
-  const inner = document.getElementById('loaderInner');
-
-  loader.classList.add('active');
-
-  inner.classList.remove('pop');
-  void inner.offsetWidth;
-  inner.classList.add('pop');
-
-  setTimeout(()=>{
-    window.location.href = next;
-  }, duration);
-}
-
-function goTo(page){
-  showLoader(page, 1000);
-}
-
 function selectLocation(name, toastUrl){
   localStorage.setItem('selectedLocation', JSON.stringify({
     name: name,
     toastUrl: toastUrl
   }));
 
-  setTimeout(()=>{
-    showLoader('order.html', 1000);
-  }, 10);
+  window.showLoader('order-details.html', 1000);
 }
 
 function openModal(){
@@ -423,9 +343,7 @@ function requestLocation(){
   closeModal();
 }
 
-setTimeout(()=>{
-  openModal();
-},1200);
+setTimeout(openModal, 1200);
 </script>
 
 </body>

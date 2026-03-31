@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="nav.js"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proposition Chicken</title>
+  <script src="nav.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposition Chicken</title>
 
-<link rel="apple-touch-icon" href="PropChkn.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" href="PropChkn.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
 
-<link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="app.css">
 </head>
 
 <body>
@@ -27,7 +27,9 @@
       <img src="PropChkn.png">
     </div>
 
-    <button class="btn apple stagger" data-link="rewards.html"> Continue with Apple</button>
+    <button class="btn apple stagger" data-link="rewards.html">
+       Continue with Apple
+    </button>
 
     <button class="btn google stagger" data-link="rewards.html">
       <svg class="google-icon" viewBox="0 0 48 48">
@@ -39,7 +41,9 @@
       Continue with Google
     </button>
 
-    <div class="link stagger" data-link="guest.html">Explore as Guest</div>
+    <div class="link stagger" data-link="guest.html">
+      Explore as Guest
+    </div>
 
     <div class="row stagger">
       <button class="btn primary" data-link="rewards.html">LOG IN</button>
@@ -86,19 +90,22 @@ setTimeout(()=>{
   splash.style.display='none';
 }, 5500);
 
-/* GLOBAL GUARD FOR TERMS */
+/* ✅ TERMS GUARD — FINAL FIX */
 document.addEventListener('click', function(e){
   const el = e.target.closest('[data-link]');
   if(!el) return;
 
   if(!agree.checked){
     e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
     error.style.display = 'block';
     return;
   }
 
   error.style.display = 'none';
-});
+}, true); // capture phase
 </script>
 
 <style>

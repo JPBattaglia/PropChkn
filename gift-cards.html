@@ -7,7 +7,7 @@
 <title>Gift Cards</title>
 
 <link rel="stylesheet" href="app.css">
-<script defer src="app.js"></script>
+<script src="app.js"></script>
 
 <style>
 :root{
@@ -25,6 +25,7 @@ body{
   background:var(--bg);
 }
 
+/* HEADER */
 .header{
   background:var(--blue);
   color:#fff;
@@ -34,24 +35,51 @@ body{
   align-items:center;
 }
 
-.header-title{font-size:20px;font-weight:800;}
-.header img{width:50px;}
+.header-title{
+  font-size:20px;
+  font-weight:800;
+}
 
-.main{padding:20px;padding-bottom:40px;}
+.header img{
+  width:50px;
+}
 
+/* MAIN */
+.main{
+  padding:20px;
+  padding-bottom:120px;
+}
+
+/* HERO */
 .hero-card{
   background:#fff;
   border-radius:22px;
   overflow:hidden;
   box-shadow:0 10px 25px rgba(0,0,0,0.08);
-  margin-bottom:20px;
+  margin-bottom:16px;
 }
 
-.hero-card img{width:100%;display:block;}
-.hero-body{padding:20px;}
-.hero-title{font-size:24px;font-weight:800;}
-.hero-desc{margin-top:10px;color:var(--muted);line-height:1.5;}
+.hero-card img{
+  width:100%;
+  display:block;
+}
 
+.hero-body{
+  padding:20px;
+}
+
+.hero-title{
+  font-size:24px;
+  font-weight:800;
+}
+
+.hero-desc{
+  margin-top:10px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+/* AMOUNTS */
 .amounts{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -85,7 +113,10 @@ body{
   color:var(--muted);
 }
 
-.footer{margin:30px 20px 120px;}
+/* CTA */
+.footer{
+  margin:30px 0 120px;
+}
 
 .cta{
   background:var(--red);
@@ -97,31 +128,7 @@ body{
   cursor:pointer;
 }
 
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:80px;
-  background:#fff;
-  border-top:1px solid #eee;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-
-.nav-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  font-size:12px;
-  color:#888;
-  cursor:pointer;
-}
-
-.nav-item.active{color:var(--blue);font-weight:600;}
-.icon{font-size:20px;margin-bottom:4px;}
-
+/* MODAL */
 .modal{
   position:fixed;
   inset:0;
@@ -141,10 +148,21 @@ body{
   text-align:center;
 }
 
-.modal-box img{width:70px;margin-bottom:10px;}
+.modal-box img{
+  width:70px;
+  margin-bottom:10px;
+}
 
-.modal-title{font-size:18px;font-weight:700;}
-.modal-text{font-size:14px;color:var(--muted);margin:8px 0 14px;}
+.modal-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.modal-text{
+  font-size:14px;
+  color:var(--muted);
+  margin:8px 0 14px;
+}
 
 .modal-input{
   width:100%;
@@ -155,7 +173,11 @@ body{
   font-size:15px;
 }
 
-.modal-actions{display:flex;gap:8px;margin-top:14px;}
+.modal-actions{
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+}
 
 .modal-btn{
   flex:1;
@@ -165,8 +187,41 @@ body{
   cursor:pointer;
 }
 
-.modal-btn.allow{background:var(--red);color:#fff;}
-.modal-btn.deny{border:1px solid var(--border);background:#fff;color:var(--text);}
+.modal-btn.allow{
+  background:var(--red);
+  color:#fff;
+}
+
+.modal-btn.deny{
+  border:1px solid var(--border);
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:80px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#888;
+}
+
+.nav-item.active{
+  color:var(--blue);
+  font-weight:600;
+}
 
 .nav-img{
   width:26px;
@@ -174,9 +229,7 @@ body{
   object-fit:contain;
   margin-bottom:4px;
 }
-
 </style>
-
 </head>
 
 <body>
@@ -198,7 +251,7 @@ body{
     </div>
   </div>
 
-  <div class="hero-card" style="margin-top:12px;">
+  <div class="hero-card">
     <div class="hero-body">
       <div class="hero-title">Use a Gift Card</div>
       <div class="hero-desc">
@@ -221,18 +274,21 @@ body{
   <div class="custom">$ Custom Amount</div>
 
   <div class="footer">
-    <div class="cta" onclick="navigate('gift-checkout.html')">CONTINUE</div>
+    <div class="cta" data-link="gift-checkout.html">CONTINUE</div>
   </div>
 
 </div>
 
+<!-- MODAL -->
 <div id="giftModal" class="modal">
   <div class="modal-box">
     <img src="PropChkn1.png">
     <div class="modal-title">Add Gift Card</div>
     <div class="modal-text">Enter your card details below</div>
+
     <input id="cardNumber" placeholder="Card Number" class="modal-input">
     <input id="cardPin" placeholder="PIN" class="modal-input" type="password">
+
     <div class="modal-actions">
       <div class="modal-btn deny" onclick="closeGiftModal()">Cancel</div>
       <div class="modal-btn allow" onclick="applyGiftCard()">Apply</div>
@@ -241,10 +297,15 @@ body{
 </div>
 
 <script>
-localStorage.setItem('giftAmount', document.querySelector('.amount.active').innerText);
+// INIT DEFAULT
+localStorage.setItem('giftAmount',
+  document.querySelector('.amount.active').innerText
+);
 
 function selectAmount(el){
-  document.querySelectorAll('.amount').forEach(a=>a.classList.remove('active'));
+  document.querySelectorAll('.amount')
+    .forEach(a=>a.classList.remove('active'));
+
   el.classList.add('active');
   localStorage.setItem('giftAmount', el.innerText);
 }
@@ -258,21 +319,13 @@ function closeGiftModal(){
 }
 
 function applyGiftCard(){
-  const number=document.getElementById('cardNumber').value.trim();
-  const pin=document.getElementById('cardPin').value.trim();
-  if(!number||!pin){return;}
+  const number = document.getElementById('cardNumber').value.trim();
+  const pin = document.getElementById('cardPin').value.trim();
+
+  if(!number || !pin) return;
+
   localStorage.setItem('giftCard', number);
   closeGiftModal();
-}
-
-function navigate(page){
-  if(window.showLoader){
-    showLoader(()=>{
-      window.location.href = page;
-    });
-  } else {
-    window.location.href = page;
-  }
 }
 </script>
 

@@ -1,4 +1,4 @@
-// app.js — FINAL GLOBAL LOADER (FIXED + SAFE)
+// app.js — FINAL GLOBAL LOADER (STABLE)
 
 (function(){
 
@@ -28,6 +28,12 @@
       return;
     }
 
+    // 🚨 SAFETY: prevent bad calls
+    if(!target){
+      loader.classList.remove('active');
+      return;
+    }
+
     loader.classList.add('active');
 
     inner.classList.remove('pop');
@@ -51,25 +57,39 @@
 
   window.showLoader = showLoader;
 
+  // 🔧 GLOBAL CLICK HANDLER (SAFE)
   document.addEventListener('click', function(e){
 
-  const el = e.target.closest('[data-link]');
-  if(!el) return;
+    const el = e.target.closest('[data-link]');
+    if(!el) return;
 
-  // 🚨 DO NOT block global events anymore
-  e.preventDefault();
+    // allow bypass (for back buttons etc.)
+    if(el.hasAttribute('data-no-loader')) return;
 
-  const url = el.getAttribute('data-link');
-  const duration = el.getAttribute('data-duration') || 1200;
+    const url = el.getAttribute('data-link');
+    const duration = el.getAttribute('data-duration') || 1200;
 
-  showLoader(url, parseInt(duration));
+    if(!url) return;
 
-}, false); // ← CHANGE: NO CAPTURE
+    e.preventDefault();
 
+    showLoader(url, parseInt(duration));
+
+  }, false);
+
+  // inject loader
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', injectLoader);
   } else {
     injectLoader();
   }
+
+  // 🔧 FIX: prevent stuck loader on back/forward
+  window.addEventListener('pageshow', function(){
+    const loader = document.getElementById('loader');
+    if(loader){
+      loader.classList.remove('active');
+    }
+  });
 
 })();
