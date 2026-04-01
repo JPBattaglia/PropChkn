@@ -293,14 +293,19 @@ function selectGroup(group, row){
 </script>
 
 <script>
-const loc = localStorage.getItem('selectedLocation');
-
+// ✅ FIXED LOCATION DISPLAY
 const display = document.getElementById('locationDisplay');
+const stored = localStorage.getItem('selectedLocation');
 
-if(loc){
-  display.innerText = loc;
+if (stored) {
+  try {
+    const location = JSON.parse(stored);
+    display.textContent = location.name || "Select Location";
+  } catch (e) {
+    display.textContent = "Select Location";
+  }
 } else {
-  display.innerText = "Select Location";
+  display.textContent = "Select Location";
 }
 </script>
 
