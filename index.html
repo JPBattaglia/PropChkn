@@ -31,7 +31,6 @@ html,body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
 }
 
-/* SPLASH */
 #splash{
   position:fixed;
   inset:0;
@@ -54,7 +53,6 @@ html,body{
   object-fit:cover;
 }
 
-/* APP (CENTERED) */
 #app{
   width:100%;
   min-height:100vh;
@@ -71,7 +69,6 @@ html,body{
   box-sizing:border-box;
 }
 
-/* ROLLUP */
 .stagger{
   opacity:0;
   transform:translateY(80px);
@@ -98,10 +95,8 @@ body.show .stagger{
 .logo img{
   width:260px;
   max-width:100%;
-  height:auto;
 }
 
-/* BUTTONS */
 .btn{
   width:100%;
   padding:18px;
@@ -147,23 +142,22 @@ body.show .stagger{
 
 <body>
 
-<!-- SPLASH -->
 <div id="splash">
-  <img src="PropChknVid.gif" class="splash-gif" alt="Splash">
+  <img src="PropChknVid.gif" class="splash-gif">
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="auth">
 
     <div class="logo stagger">
-      <img src="PropChkn.png" alt="Proposition Chicken">
+      <img src="PropChkn.png">
     </div>
 
     <button class="btn apple stagger" onclick="go('rewards.html')"> Continue with Apple</button>
     <button class="btn google stagger" onclick="go('rewards.html')">Continue with Google</button>
 
-    <div class="link stagger" onclick="go('guest.html')">Explore as Guest</div>
+    <!-- ✅ CORRECT FIX -->
+    <div class="link stagger" onclick="go('rewards.html')">Explore as Guest</div>
 
     <div class="row stagger">
       <button class="btn primary" onclick="go('rewards.html')">LOG IN</button>
@@ -185,16 +179,15 @@ const err = document.getElementById('err');
 
 let splashDone = false;
 
-/* SPLASH */
-setTimeout(() => {
+setTimeout(()=>{
   splash.classList.add('fade');
 
-  setTimeout(() => {
-    splash.style.display = 'none';
-    document.body.style.overflow = 'auto';
+  setTimeout(()=>{
+    splash.style.display='none';
+    document.body.style.overflow='auto';
     splashDone = true;
 
-    setTimeout(() => {
+    setTimeout(()=>{
       document.body.classList.add('show');
     }, 120);
 
@@ -202,21 +195,20 @@ setTimeout(() => {
 
 }, 4000);
 
-/* NAV */
 function go(page){
   if(!splashDone) return;
 
   if(!agree.checked){
-    err.style.display = 'block';
+    err.style.display='block';
     return;
   }
 
-  err.style.display = 'none';
+  err.style.display='none';
 
   if(window.showLoader){
     showLoader(page, 1200);
   } else {
-    window.location.href = page;
+    location.href = page;
   }
 }
 </script>
