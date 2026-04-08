@@ -171,10 +171,11 @@ body{
   background:var(--red);
   color:#fff;
   text-align:center;
-  padding:20px;
+  padding:18px 20px;
   border-radius:999px;
   font-weight:800;
   font-size:16px;
+  line-height:1.2;
 }
 
 /* NAV */
@@ -211,6 +212,36 @@ body{
   height:26px;
   object-fit:contain;
   margin-bottom:4px;
+}
+
+@media (max-width: 640px){
+  body{
+    padding-bottom:200px;
+  }
+
+  .footer{
+    left:14px;
+    right:14px;
+    bottom:88px;
+  }
+
+  .next{
+    padding:14px 16px;
+    font-size:14px;
+    border-radius:999px;
+  }
+
+  .row{
+    padding:20px 16px;
+  }
+
+  .row-title{
+    font-size:20px;
+  }
+
+  .row-sub{
+    font-size:14px;
+  }
 }
 </style>
 </head>
@@ -302,7 +333,6 @@ function selectGroup(group, row){
 </script>
 
 <script>
-// ✅ FIXED LOCATION DISPLAY
 const display = document.getElementById('locationDisplay');
 const stored = localStorage.getItem('selectedLocation');
 
