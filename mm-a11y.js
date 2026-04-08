@@ -431,7 +431,7 @@
     panel.innerHTML =
       '<div class="mm-a11y-head">' +
         '<div class="mm-a11y-head-copy">' +
-          '<p class="mm-a11y-title">Menu-Made Accessibility</p>' +
+          '<p class="mm-a11y-title">Proposition Chicken Accessibility</p>' +
           '<p class="mm-a11y-sub">Usability controls that improve readability, contrast, focus, and interaction.</p>' +
         "</div>" +
         '<button type="button" class="mm-a11y-close" id="mmA11yClose" aria-label="Close">Close</button>' +
