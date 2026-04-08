@@ -57,7 +57,6 @@
   var loadBound = false;
   var mouseMoveBound = false;
   var touchMoveBound = false;
-  var positionObserver = null;
 
   function clone(obj){
     return JSON.parse(JSON.stringify(obj));
@@ -187,54 +186,30 @@
       document.querySelector("nav[data-mm-nav]") ||
       document.querySelector("nav");
 
-    if (!nav) return 0;
-    return nav.offsetHeight || 80;
-  }
+    if (!nav) return 80;
 
-  function getFloatingOffset(){
-    var baseOffset = 16;
-    var offset = baseOffset + getNavHeight();
+    var rect = nav.getBoundingClientRect();
+    var height = Math.round(rect.height || nav.offsetHeight || 0);
 
-    var cta = document.querySelector(".cta, .floating-cta");
-    if (cta) {
-      var rect = cta.getBoundingClientRect();
-      if (rect.bottom > window.innerHeight - 120) {
-        offset += rect.height || 0;
-      }
-    }
-
-    return offset;
+    if (!height || height < 40) return 80;
+    return height;
   }
 
   function adjustPosition(){
-    var launcher = getLauncher();
-    var panel = getPanel();
-    if (!launcher || !panel) return;
-
-    var offset = getFloatingOffset();
-    launcher.style.bottom = offset + "px";
-    
-  panel.style.bottom = (offset + 12) + "px";
-  panel.style.maxHeight = "min(72vh, calc(100vh - " + (offset + 28) + "px))";
+    var navHeight = getNavHeight();
+    document.documentElement.style.setProperty("--mm-a11y-nav-offset", navHeight + "px");
   }
 
   function bindPositioning(){
     if (!resizeBound) {
-      window.addEventListener("resize", adjustPosition);
-      window.addEventListener("orientationchange", adjustPosition);
+      window.addEventListener("resize", adjustPosition, { passive: true });
+      window.addEventListener("orientationchange", adjustPosition, { passive: true });
       resizeBound = true;
     }
 
     if (!loadBound) {
       window.addEventListener("load", adjustPosition);
       loadBound = true;
-    }
-
-    if (!positionObserver) {
-      positionObserver = new MutationObserver(function(){
-        adjustPosition();
-      });
-      positionObserver.observe(document.body, { childList: true, subtree: true });
     }
   }
 
