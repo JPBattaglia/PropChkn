@@ -3,10 +3,12 @@
 <head>
 
 <link rel="stylesheet" href="mm-a11y.css">
+
 <script>
-window.MM_A11Y_ICON_SRC = "PropChkn2.png";
+window.MM_INDEX_EMBED_WIDGET = true;
+window.MM_A11Y_ICON_SRC = "BrainardIconRuby.png";
+window.MM_A11Y_CSS_HREF = "mm-a11y.css";
 </script>
-<script src="mm-a11y.js"></script>
 
 <meta property="og:title" content="Proposition Chicken">
 <meta property="og:description" content="Order ahead, earn rewards, and skip the line.">
@@ -38,6 +40,7 @@ html,body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
 }
 
+/* SPLASH */
 #splash{
   position:fixed;
   inset:0;
@@ -60,6 +63,7 @@ html,body{
   object-fit:cover;
 }
 
+/* APP */
 #app{
   width:100%;
   min-height:100vh;
@@ -69,13 +73,76 @@ html,body{
   align-items:center;
 }
 
+/* LOGIN CARD */
 .auth{
   width:100%;
   max-width:420px;
   padding:28px;
   box-sizing:border-box;
+  position:relative;
 }
 
+/* HARD HIDE UNTIL READY */
+body.index-page.pre-reveal #mmA11yLauncher,
+body.index-page.pre-reveal #mmA11yPanel{
+  display:none !important;
+}
+
+/* WIDGET EMBEDDED IN LOGIN STACK */
+.auth #mmA11yLauncher{
+  position:absolute !important;
+  z-index:50 !important;
+  right:-70px !important;
+  bottom:10px !important;
+  box-shadow:
+    0 0 18px rgba(207,62,62,0.35),
+    0 0 28px rgba(0,120,255,0.25);
+
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:translateY(80px) scale(.9) !important;
+  transition:
+    opacity 1s var(--spring),
+    transform 1s var(--spring),
+    visibility 0s linear 1s !important;
+  transition-delay:.65s, .65s, 1.65s !important;
+}
+
+body.index-page.show.widget-mounted .auth #mmA11yLauncher{
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  transform:translateY(0) scale(.95) !important;
+}
+
+.auth #mmA11yPanel{
+  position:absolute !important;
+  z-index:49 !important;
+  right:-20px !important;
+  bottom:84px !important;
+  width:min(420px, calc(100vw - 24px)) !important;
+  max-height:min(72vh, 620px) !important;
+
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:translateY(10px) scale(.98) !important;
+  transition:opacity .25s ease, transform .25s ease, visibility 0s linear .25s !important;
+}
+
+body.index-page.show.widget-mounted .auth #mmA11yPanel[aria-hidden="false"]{
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  transform:translateY(0) scale(1) !important;
+}
+
+body.index-page.widget-mounted .auth #mmA11yPanel[aria-hidden="true"]{
+  display:none !important;
+}
+
+/* ANIMATION */
 .stagger{
   opacity:0;
   transform:translateY(80px);
@@ -95,6 +162,10 @@ body.show .stagger{
 .stagger:nth-child(6){transition-delay:1.05s;}
 
 .logo{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   text-align:center;
   margin-bottom:80px;
 }
@@ -102,6 +173,8 @@ body.show .stagger{
 .logo img{
   width:260px;
   max-width:100%;
+  display:block;
+  margin:0 auto;
 }
 
 .btn{
@@ -144,17 +217,64 @@ body.show .stagger{
   color:red;
   display:none;
 }
+
+/* MOBILE FIT */
+@media (max-width: 640px){
+  .auth{
+    max-width:100%;
+    padding:20px 16px 28px;
+  }
+
+  .logo{
+    margin-bottom:56px;
+  }
+
+  .logo img{
+    width:220px;
+  }
+
+  .auth #mmA11yLauncher{
+    right:8px !important;
+    bottom:-4px !important;
+  }
+
+  .auth #mmA11yPanel{
+    left:8px !important;
+    right:8px !important;
+    width:auto !important;
+    bottom:74px !important;
+    max-height:calc(100vh - 140px) !important;
+  }
+}
+
+@media (max-width: 420px){
+  .auth{
+    padding:18px 12px 24px;
+  }
+
+  .auth #mmA11yLauncher{
+    right:4px !important;
+    bottom:-6px !important;
+  }
+
+  .auth #mmA11yPanel{
+    left:4px !important;
+    right:4px !important;
+    bottom:72px !important;
+    max-height:calc(100vh - 128px) !important;
+  }
+}
 </style>
 </head>
 
-<body>
+<body class="index-page pre-reveal">
 
 <div id="splash">
   <img src="PropChknVid.gif" class="splash-gif">
 </div>
 
 <div id="app">
-  <div class="auth">
+  <div class="auth" id="authCard">
 
     <div class="logo stagger">
       <img src="PropChkn.png">
@@ -163,7 +283,6 @@ body.show .stagger{
     <button class="btn apple stagger" onclick="go('rewards.html')"> Continue with Apple</button>
     <button class="btn google stagger" onclick="go('rewards.html')">Continue with Google</button>
 
-    <!-- ✅ CORRECT FIX -->
     <div class="link stagger" onclick="go('rewards.html')">Explore as Guest</div>
 
     <div class="row stagger">
@@ -183,21 +302,120 @@ body.show .stagger{
 const splash = document.getElementById('splash');
 const agree = document.getElementById('agree');
 const err = document.getElementById('err');
+const authCard = document.getElementById('authCard');
 
 let splashDone = false;
 
-setTimeout(()=>{
+function getLauncher(){
+  return document.getElementById('mmA11yLauncher');
+}
+
+function getPanel(){
+  return document.getElementById('mmA11yPanel');
+}
+
+function forceLoadWidget(){
+  if (getLauncher() && getPanel()) return;
+
+  window.MenuMadeAccessibilityWidgetLoaded = false;
+
+  const existing =
+    document.querySelector('script[data-mm-a11y="1"]') ||
+    document.querySelector('script[data-index-widget="1"]');
+
+  if (existing) return;
+
+  const script = document.createElement('script');
+  script.src = 'mm-a11y.js';
+  script.defer = true;
+  script.setAttribute('data-index-widget', '1');
+  document.body.appendChild(script);
+}
+
+function mountWidgetIntoAuth(){
+  const launcher = getLauncher();
+  const panel = getPanel();
+
+  if (!launcher || !panel) return false;
+
+  if (launcher.parentElement !== authCard) {
+    authCard.appendChild(launcher);
+  }
+
+  if (panel.parentElement !== authCard) {
+    authCard.appendChild(panel);
+  }
+
+  launcher.style.display = '';
+  launcher.style.right = '';
+  launcher.style.bottom = '';
+  launcher.style.opacity = '';
+  launcher.style.visibility = '';
+  launcher.style.pointerEvents = '';
+  launcher.style.transform = '';
+  launcher.style.transition = '';
+  launcher.style.transitionDelay = '';
+
+  panel.style.display = '';
+  panel.style.left = '';
+  panel.style.right = '';
+  panel.style.bottom = '';
+  panel.style.width = '';
+  panel.style.maxHeight = '';
+  panel.style.opacity = '';
+  panel.style.visibility = '';
+  panel.style.pointerEvents = '';
+  panel.style.transform = '';
+  panel.style.transition = '';
+  panel.style.transitionDelay = '';
+
+  document.body.classList.add('widget-mounted');
+  return true;
+}
+
+function beginShowAnimation(){
+  document.body.classList.remove('pre-reveal');
+  void authCard.offsetWidth;
+  document.body.classList.add('show');
+}
+
+function startReveal(){
+  forceLoadWidget();
+
+  let attempts = 0;
+
+  function loop(){
+    if (mountWidgetIntoAuth()) {
+      beginShowAnimation();
+      return;
+    }
+
+    attempts += 1;
+
+    if (attempts === 20 || attempts === 40) {
+      forceLoadWidget();
+    }
+
+    if (attempts > 160) {
+      document.body.classList.remove('pre-reveal');
+      document.body.classList.add('show');
+      return;
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+}
+
+setTimeout(function(){
   splash.classList.add('fade');
 
-  setTimeout(()=>{
-    splash.style.display='none';
-    document.body.style.overflow='auto';
+  setTimeout(function(){
+    splash.style.display = 'none';
+    document.body.style.overflow = 'auto';
     splashDone = true;
-
-    setTimeout(()=>{
-      document.body.classList.add('show');
-    }, 120);
-
+    startReveal();
   }, 300);
 
 }, 4000);
@@ -206,11 +424,11 @@ function go(page){
   if(!splashDone) return;
 
   if(!agree.checked){
-    err.style.display='block';
+    err.style.display = 'block';
     return;
   }
 
-  err.style.display='none';
+  err.style.display = 'none';
 
   if(window.showLoader){
     showLoader(page, 1200);

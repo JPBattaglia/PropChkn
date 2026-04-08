@@ -1,170 +1,154 @@
-#loader{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s ease;
+/* app.css — GLOBAL APP STYLES */
+
+*{
+  box-sizing:border-box;
 }
 
-#loader{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s ease;
+html, body{
+  max-width:100%;
+  overflow-x:hidden;
 }
 
-#loader.active{
-  opacity:1;
-  pointer-events:auto;
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-.loader-inner{
-  position:relative;
-  width:120px;
-  height:120px;
-  background:var(--blue);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:
-    inset 0 2px 26px #027,
-    inset 0 -6px 24px #027;
+/* =========================
+   GLOBAL IMAGE SAFETY
+========================= */
+img{
+  max-width:100%;
+  height:auto;
+  display:block;
 }
 
-.loader-logo{
-  width:75px;
-  height:75px;
+.hero,
+.hero img,
+.hero-img{
+  width:100%;
+  max-width:100%;
+  height:auto;
   object-fit:contain;
-  z-index:2;
-  filter: drop-shadow(1px 1px 1px white);
 }
 
-.loader-ring{
-  position:absolute;
-  inset:-18px;
-  border-radius:50%;
-  border:6px solid transparent;
-  border-top:6px solid #cf3e3e;
-border-right:6px solid #cf3e3e;
-  animation:spin 1s linear infinite;
+.section,
+.card,
+.container{
+  overflow:hidden;
 }
 
-@keyframes spin{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
-}
-
-@keyframes popBounce{
-  0%   { transform:scale(0.7); opacity:0; }
-  60%  { transform:scale(1.08); opacity:1; }
-  80%  { transform:scale(0.97); }
-  100% { transform:scale(1); }
-}
-
-.loader-inner.pop{
-  animation:popBounce 0.45s cubic-bezier(.34,1.56,.64,1);
-}
-
-/* NAV */
+/* =========================
+   GLOBAL NAV
+========================= */
 .nav{
   position:fixed;
-  bottom:0;
   left:0;
   right:0;
+  bottom:0;
   height:80px;
   background:#fff;
   border-top:1px solid #eee;
   display:flex;
   justify-content:space-around;
   align-items:center;
-  z-index:999;
+  z-index:1000;
 }
 
 .nav-item{
   display:flex;
   flex-direction:column;
   align-items:center;
-  font-size:11px;
-  color:#8e8e93;
+  justify-content:center;
+  gap:4px;
+  min-width:58px;
+  font-size:12px;
+  line-height:1.15;
+  color:#888;
   cursor:pointer;
-  flex:1;
+  text-align:center;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
 }
 
 .nav-item.active{
-  color:#cf3e3e;
+  color:#6f9faa;
   font-weight:600;
 }
 
-.nav-icon{
+.nav-icon,
+.nav-img{
   width:26px;
   height:26px;
   object-fit:contain;
-  margin-bottom:4px;
-  transition:transform .15s ease;
+  display:block;
 }
 
-.nav-item:active .nav-icon{
-  transform:scale(0.9);
-}
-
-/* LOADER WRAPPER */
+/* =========================
+   GLOBAL LOADER
+========================= */
 #loader{
   position:fixed;
   inset:0;
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
-  pointer-events:none;
-  z-index:9999;
+  z-index:99999;
 }
 
-/* BACKDROP (DIM + BLUR) */
+#loader.active{
+  display:flex;
+}
+
 .loader-backdrop{
   position:absolute;
   inset:0;
-
-  background:rgba(0,0,0,0.55);
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  opacity:0;
-  transition:opacity .25s ease;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(4px);
 }
 
-/* ACTIVE STATE */
-#loader.active{
-  pointer-events:auto;
-}
-
-#loader.active .loader-backdrop{
-  opacity:1;
-}
-
-/* INNER (LOADER CONTENT) */
 .loader-inner{
   position:relative;
-  z-index:2;
-
-  transform:scale(.9);
-  opacity:0;
-
-  transition:
-    transform .25s ease,
-    opacity .2s ease;
+  width:120px;
+  height:120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1;
 }
 
 .loader-inner.pop{
-  transform:scale(1);
-  opacity:1;
+  animation:mmLoaderPop .5s ease;
+}
+
+.loader-ring{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,0.25);
+  border-top-color:#fff;
+  animation:mmLoaderSpin 1s linear infinite;
+}
+
+.loader-logo{
+  width:64px;
+  height:64px;
+  object-fit:contain;
+  z-index:1;
+}
+
+body.loader-active{
+  overflow:hidden;
+}
+
+@keyframes mmLoaderSpin{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+@keyframes mmLoaderPop{
+  0%{ transform:scale(.9); opacity:.7; }
+  100%{ transform:scale(1); opacity:1; }
 }

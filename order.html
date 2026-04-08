@@ -3,13 +3,6 @@
 <head>
 
 <link rel="stylesheet" href="mm-a11y.css">
-<script>
-window.MM_A11Y_ICON_SRC = "PropChkn2.png";
-</script>
-<script src="mm-a11y.js"></script>
-
-<link rel="stylesheet" href="mm-a11y.css">
-<script src="mm-a11y.js"></script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -225,7 +218,9 @@ setTimeout(function(){
   wipe.classList.add('active');
 
   setTimeout(function(){
-    window.location.href = "https://order.propositionchicken.com/";
+    showLoader(function(){
+      window.location.href = "https://order.propositionchicken.com/";
+    }, 800);
   }, 750);
 
 }, 500);

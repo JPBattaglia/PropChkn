@@ -1,10 +1,15 @@
 /* Menu-Made Accessibility Widget (portable) — PRODUCTION BUILD */
 (function(){
-  if (window.MenuMadeAccessibilityWidgetLoaded) return;
-  window.MenuMadeAccessibilityWidgetLoaded = true;
+  if (
+    window.MenuMadeAccessibilityWidgetLoaded &&
+    document.getElementById("mmA11yLauncher") &&
+    document.getElementById("mmA11yPanel")
+  ) {
+    return;
+  }
 
   var KEY = "mm_a11y_widget_v4";
-  var ICON_SRC ="BrainardIconRuby.png";
+  var ICON_SRC = window.MM_A11Y_ICON_SRC || "BrainardIconRuby.png";
 
   var DEFAULTS = {
     open: false,
@@ -48,6 +53,11 @@
   };
 
   var state = load();
+  var resizeBound = false;
+  var loadBound = false;
+  var mouseMoveBound = false;
+  var touchMoveBound = false;
+  var positionObserver = null;
 
   function clone(obj){
     return JSON.parse(JSON.stringify(obj));
@@ -158,6 +168,76 @@
     });
   }
 
+  function getGuide(){
+    return document.getElementById("mmA11yGuide");
+  }
+
+  function getLauncher(){
+    return document.getElementById("mmA11yLauncher");
+  }
+
+  function getPanel(){
+    return document.getElementById("mmA11yPanel");
+  }
+
+  function getNavHeight(){
+    var nav =
+      document.querySelector(".nav") ||
+      document.querySelector(".bottom-nav") ||
+      document.querySelector("nav[data-mm-nav]") ||
+      document.querySelector("nav");
+
+    if (!nav) return 0;
+    return nav.offsetHeight || 80;
+  }
+
+  function getFloatingOffset(){
+    var baseOffset = 16;
+    var offset = baseOffset + getNavHeight();
+
+    var cta = document.querySelector(".cta, .floating-cta");
+    if (cta) {
+      var rect = cta.getBoundingClientRect();
+      if (rect.bottom > window.innerHeight - 120) {
+        offset += rect.height || 0;
+      }
+    }
+
+    return offset;
+  }
+
+  function adjustPosition(){
+    var launcher = getLauncher();
+    var panel = getPanel();
+    if (!launcher || !panel) return;
+
+    var offset = getFloatingOffset();
+    launcher.style.bottom = offset + "px";
+    
+  panel.style.bottom = (offset + 12) + "px";
+  panel.style.maxHeight = "min(72vh, calc(100vh - " + (offset + 28) + "px))";
+  }
+
+  function bindPositioning(){
+    if (!resizeBound) {
+      window.addEventListener("resize", adjustPosition);
+      window.addEventListener("orientationchange", adjustPosition);
+      resizeBound = true;
+    }
+
+    if (!loadBound) {
+      window.addEventListener("load", adjustPosition);
+      loadBound = true;
+    }
+
+    if (!positionObserver) {
+      positionObserver = new MutationObserver(function(){
+        adjustPosition();
+      });
+      positionObserver.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   function apply(){
     setAttr("data-mm-a11y-text", state.text ? String(state.text) : "");
     setAttr("data-mm-a11y-content-scale", state.contentScale ? String(state.contentScale) : "");
@@ -207,12 +287,18 @@
     updateValueLabels();
     applyColorVars();
     applyMediaMute();
+    adjustPosition();
   }
 
   function resetState(){
     state = clone(DEFAULTS);
     save();
     apply();
+
+    var panel = getPanel();
+    if (panel) {
+      panel.setAttribute("aria-hidden", "true");
+    }
   }
 
   function section(title, inner){
@@ -225,7 +311,7 @@
   }
 
   function btn(id, text, cls){
-    return '<button type="button" class="' + (cls || 'mm-a11y-btn') + '" id="' + id + '" aria-pressed="false">' + text + '</button>';
+    return '<button type="button" class="' + (cls || "mm-a11y-btn") + '" id="' + id + '" aria-pressed="false">' + text + '</button>';
   }
 
   function sliderRow(label, downId, upId, valueId){
@@ -257,9 +343,9 @@
     });
 
     html +=
-        '</div>' +
+        "</div>" +
         '<button type="button" class="mm-a11y-cancel" id="' + prefix + 'Cancel">Cancel</button>' +
-      '</div>';
+      "</div>";
 
     return html;
   }
@@ -304,9 +390,52 @@
     document.head.appendChild(link);
   }
 
-  function build(){
-    if (document.getElementById("mmA11yLauncher")) return;
+  function bindGuideTracking(){
+    if (!mouseMoveBound) {
+      window.addEventListener("mousemove", function(e){
+        if (!state.guide) return;
+        var guide = getGuide();
+        if (!guide) return;
+        guide.style.top = Math.max(0, Math.min(window.innerHeight - 34, e.clientY - 17)) + "px";
+      }, { passive: true });
+      mouseMoveBound = true;
+    }
 
+    if (!touchMoveBound) {
+      window.addEventListener("touchmove", function(e){
+        if (!state.guide) return;
+        if (!e.touches || !e.touches[0]) return;
+        var guide = getGuide();
+        if (!guide) return;
+        var y = e.touches[0].clientY;
+        guide.style.top = Math.max(0, Math.min(window.innerHeight - 34, y - 17)) + "px";
+      }, { passive: true });
+      touchMoveBound = true;
+    }
+  }
+
+  function removeExistingDom(){
+    var existingLauncher = getLauncher();
+    var existingPanel = getPanel();
+    var existingGuide = getGuide();
+
+    if (existingLauncher) existingLauncher.remove();
+    if (existingPanel) existingPanel.remove();
+    if (existingGuide) existingGuide.remove();
+  }
+
+  function build(){
+    if (
+      window.MenuMadeAccessibilityWidgetLoaded &&
+      getLauncher() &&
+      getPanel()
+    ) {
+      adjustPosition();
+      apply();
+      return;
+    }
+
+    removeExistingDom();
     ensureCssLoaded();
 
     var launcher = document.createElement("button");
@@ -329,9 +458,9 @@
         '<div class="mm-a11y-head-copy">' +
           '<p class="mm-a11y-title">Menu-Made Accessibility</p>' +
           '<p class="mm-a11y-sub">Usability controls that improve readability, contrast, focus, and interaction.</p>' +
-        '</div>' +
+        "</div>" +
         '<button type="button" class="mm-a11y-close" id="mmA11yClose" aria-label="Close">Close</button>' +
-      '</div>' +
+      "</div>" +
 
       '<div class="mm-a11y-body">' +
 
@@ -343,7 +472,7 @@
             btn("mmA11yText1", "Large") +
             btn("mmA11yText2", "XL") +
             btn("mmA11yText3", "XXL") +
-          '</div>' +
+          "</div>" +
 
           sliderRow("Content Scaling", "mmA11yContentDown", "mmA11yContentUp", "mmA11yContentValue") +
           sliderRow("Line Height", "mmA11yLineDown", "mmA11yLineUp", "mmA11yLineValue") +
@@ -354,13 +483,13 @@
             btn("mmA11yTitles", "Highlight Titles") +
             btn("mmA11yLinks", "Highlight Links") +
             btn("mmA11yUnderline", "Underline Links") +
-          '</div>' +
+          "</div>" +
 
           '<div class="mm-a11y-align-row">' +
             btn("mmA11yAlignLeft", "Align Left", "mm-a11y-btn mm-a11y-pill-btn") +
             btn("mmA11yAlignCenter", "Align Center", "mm-a11y-btn mm-a11y-pill-btn") +
             btn("mmA11yAlignRight", "Align Right", "mm-a11y-btn mm-a11y-pill-btn") +
-          '</div>'
+          "</div>"
         ) +
 
         section(
@@ -374,7 +503,7 @@
             btn("mmA11yHighSat", "High Saturation") +
             btn("mmA11yMono", "Monochrome") +
             btn("mmA11yImages", "Hide Images") +
-          '</div>' +
+          "</div>" +
 
           colorRow("Text Color", "mmTextColor") +
           colorRow("Title Color", "mmTitleColor") +
@@ -388,17 +517,17 @@
             btn("mmA11yFocus", "Highlight Focus") +
             btn("mmA11yGuideBtn", "Reading Guide") +
             btn("mmA11yMute", "Mute Sounds") +
-          '</div>'
+          "</div>"
         ) +
 
         section(
           "Actions",
           '<div class="mm-a11y-grid">' +
             btn("mmA11yReset", "Reset Settings", "mm-a11y-btn mm-a11y-wide") +
-          '</div>'
+          "</div>"
         ) +
 
-      '</div>';
+      "</div>";
 
     var guide = document.createElement("div");
     guide.className = "mm-a11y-guide";
@@ -407,6 +536,10 @@
     document.body.appendChild(launcher);
     document.body.appendChild(panel);
     document.body.appendChild(guide);
+
+    adjustPosition();
+    bindPositioning();
+    bindGuideTracking();
 
     launcher.addEventListener("click", function(){
       state.open = !state.open;
@@ -457,7 +590,6 @@
     on("mmA11yLinks", function(){ state.highlightLinks = !state.highlightLinks; save(); apply(); });
     on("mmA11yFocus", function(){ state.focusHighlight = !state.focusHighlight; save(); apply(); });
     on("mmA11yImages", function(){ state.hideImages = !state.hideImages; save(); apply(); });
-
     on("mmA11yMute", function(){
       state.muteSounds = !state.muteSounds;
       save();
@@ -484,18 +616,7 @@
       resetState();
     });
 
-    window.addEventListener("mousemove", function(e){
-      if (!state.guide) return;
-      guide.style.top = Math.max(0, Math.min(window.innerHeight - 34, e.clientY - 17)) + "px";
-    }, { passive:true });
-
-    window.addEventListener("touchmove", function(e){
-      if (!state.guide) return;
-      if (!e.touches || !e.touches[0]) return;
-      var y = e.touches[0].clientY;
-      guide.style.top = Math.max(0, Math.min(window.innerHeight - 34, y - 17)) + "px";
-    }, { passive:true });
-
+    window.MenuMadeAccessibilityWidgetLoaded = true;
     apply();
   }
 

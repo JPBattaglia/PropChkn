@@ -395,17 +395,46 @@ html[data-mm-a11y-has-bg-color="1"] body{
 
 @media (max-width: 640px){
   .mm-a11y-panel{
-    right: 12px;
-    left: 12px;
-    width: auto;
-    bottom: 86px;
-  }
+  position: fixed;
+
+  right: max(16px, env(safe-area-inset-right));
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 80px);
+
+  width: min(420px, calc(100vw - 24px));
+  max-height: min(80vh, 860px);
+
+  z-index: 2147483000;
+}
+
   .mm-a11y-launcher{
-    right: 12px;
-    bottom: 75px;
-    width: 50px;
-    height: 50px;
-  }
+  position: fixed;
+
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+
+  z-index: 2147483000;
+  width: 62px;
+  height: 62px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4);
+
+  background: linear-gradient(
+    145deg,
+    rgba(207,62,62,0.9),
+    rgba(120,10,10,0.95)
+  );
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35),
+    0 0 0 2px rgba(255,255,255,0.12);
+
+  cursor: pointer;
+  padding: 0;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+}
   .mm-a11y-grid-4{
     grid-template-columns: repeat(2, minmax(0,1fr));
   }
